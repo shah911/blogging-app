@@ -45,9 +45,12 @@ type singlePost = {
 let err: boolean;
 
 const getRecentPosts = async () => {
-  const res = await fetch(`${process.env.URL}/api/posts?latest=true`, {
-    next: { revalidate: 600000 },
-  });
+  const res = await fetch(
+    `https://blogging-app-rh8v.vercel.app/api/posts?latest=true`,
+    {
+      next: { revalidate: 600000 },
+    }
+  );
   if (!res.ok) {
     return { err: true };
   }

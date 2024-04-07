@@ -13,9 +13,12 @@ type params = {
 };
 let err: boolean;
 const getPost = async (id: string) => {
-  const res = await fetch(`${process.env.URL}/api/posts/${id}`, {
-    next: { revalidate: 600000 },
-  });
+  const res = await fetch(
+    `https://blogging-app-rh8v.vercel.app/api/posts/${id}`,
+    {
+      next: { revalidate: 600000 },
+    }
+  );
   if (!res.ok) {
     return { err: true };
   }
