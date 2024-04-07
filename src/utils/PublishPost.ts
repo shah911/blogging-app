@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export default const PublishPost = async (title: string, desc: string, img: string) => {
+export const PublishPost = async (title: string, desc: string, img: string) => {
   try {
     const res = await fetch("/api/posts", {
       method: "POST",
