@@ -74,4 +74,5 @@ export default {
   pages: {
     signIn: "/login",
   },
+  secret: process.env.AUTH_SERECT,
 } satisfies NextAuthConfig;
