@@ -14,6 +14,7 @@ import { app } from "@/utils/firebase";
 import dynamic from "next/dynamic";
 import Loader from "@/components/Loader";
 import { useForm } from "react-hook-form";
+import { AnimatePresence, motion } from "framer-motion";
 
 type FormData = {
   img: File[];
@@ -151,8 +152,20 @@ const PublishPost = () => {
     <div className="w-[95%] mx-auto py-10 2xl:py-[5vw]">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center gap-10 2xl:gap-[2.5vw]"
+        className="relative flex flex-col justify-center gap-10 2xl:gap-[2.5vw]"
       >
+        <AnimatePresence mode="wait">
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5, transition: { duration: 0.3 } }}
+              exit={{ opacity: 0, transition: { duration: 0.3 } }}
+              className="z-10 absolute top-0 h-[100%] w-[100%] flex items-center justify-center rounded-md 2xl:rounded-[0.375vw] bg-white"
+            >
+              <Loader />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div>
           <input
             {...register("img", {
