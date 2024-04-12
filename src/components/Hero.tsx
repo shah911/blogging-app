@@ -42,8 +42,6 @@ type singlePost = {
 //   },
 // ];
 
-let err: boolean;
-
 const getRecentPosts = async () => {
   const res = await fetch(
     `https://blogging-app-rh8v.vercel.app/api/posts?latest=true`,
@@ -51,16 +49,12 @@ const getRecentPosts = async () => {
       next: { revalidate: 60000 },
     }
   );
-  if (!res.ok) {
-    return { err: true };
-  }
   return res.json();
 };
 const Hero = async () => {
-  const data = await getRecentPosts();
-  const posts = await data.Posts;
+  const { Posts, message } = await getRecentPosts();
 
-  if (err) {
+  if (message) {
     return (
       <ErrPage message="something went wrong, while fetching the latest posts" />
     );
@@ -87,7 +81,7 @@ const Hero = async () => {
         </div>
       </div>
       <div className="flex-[3] flex flex-col h-[100%]">
-        {posts?.map((post: singlePost, i: number) => (
+        {Posts?.map((post: singlePost, i: number) => (
           <RecentPosts key={i} post={post} />
         ))}
       </div>

@@ -1,6 +1,8 @@
 "use client";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import Loader from "./Loader";
 
 type Props = {
   postId: string;
@@ -8,16 +10,20 @@ type Props = {
 
 const DeletePost = ({ postId }: Props) => {
   const [notify, setNotify] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleClick = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/posts/${postId}`, {
       method: "DELETE",
     });
     if (res.ok) {
       router.push("/blog");
+      setIsLoading(false);
     } else {
       setNotify(true);
+      setIsLoading(false);
     }
   };
 
@@ -32,8 +38,20 @@ const DeletePost = ({ postId }: Props) => {
   return (
     <span
       onClick={handleClick}
-      className="cursor-pointer p-[1.5vw] md:p-[1vw] rounded-[50%] text-white text-xs 2xl:text-[1vw] font-[600] capitalize w-fit bg-black flex items-center justify-center"
+      className="relative cursor-pointer p-[1.5vw] md:p-[1vw] rounded-[50%] text-white text-xs 2xl:text-[1vw] font-[600] capitalize w-fit bg-black flex items-center justify-center"
     >
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5, transition: { duration: 0.3 } }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            className="z-10 absolute top-0 h-[100%] w-[100%] flex items-center justify-center rounded-md 2xl:rounded-[0.375vw] bg-white"
+          >
+            <Loader />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <svg
         className="h-5 w-5 2xl:h-[1.5vw] 2xl:w-[1.5vw]"
         viewBox="0 0 15 15"

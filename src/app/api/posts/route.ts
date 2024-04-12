@@ -27,7 +27,6 @@ export const GET = async (req: NextRequest) => {
     const Posts = await prisma.post.findMany(query);
     return new NextResponse(JSON.stringify({ Posts }), { status: 200 });
   } catch (err) {
-    console.log(err);
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong" }),
       { status: 500 }
@@ -49,7 +48,6 @@ export const POST = async (req: NextRequest) => {
       });
       return new NextResponse(JSON.stringify(post), { status: 200 });
     } catch (err) {
-      console.log(err);
       return new NextResponse(
         JSON.stringify({ message: "Something went wrong" }),
         { status: 500 }

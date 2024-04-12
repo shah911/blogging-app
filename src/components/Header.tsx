@@ -38,6 +38,7 @@ const Header = async () => {
         ))}
         {session?.user && <Logout />}
       </div>
+      <div className="block lg:hidden">{session?.user && <Logout />}</div>
       <div className="flex-[1] flex items-center justify-end">
         <Menu />
       </div>

@@ -15,9 +15,6 @@ export default auth((req) => {
   const isOnAdminRoutes = AdminRoutes.some((pattern) =>
     pattern.test(nextUrl.pathname)
   );
-  // console.log(req.auth?.user);
-  // console.log(isUserAdmin);
-  // console.log(isOnAdminRoutes);
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isLoginOrRegisterRoute = LoginOrRegisterRoutes.includes(
