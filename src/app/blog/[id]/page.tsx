@@ -20,7 +20,7 @@ const getPost = async (id: string) => {
     }
   );
   if (!res.ok) {
-    return { err: true };
+    return (err = true);
   }
   return res.json();
 };
