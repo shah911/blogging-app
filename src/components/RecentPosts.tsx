@@ -40,7 +40,7 @@ const RecentPosts = ({ post }: Prop) => {
           </Link>
           <div
             dangerouslySetInnerHTML={{
-              __html: post.desc.substring(0, 200),
+              __html: post.desc.substring(0, 200) + "...",
             }}
             className="text-xs w-[90%] text-justify font-[500] 2xl:text-[0.85vw] 2xl:leading-[125%]"
           />
