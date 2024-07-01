@@ -46,7 +46,7 @@ const getRecentPosts = async () => {
   const res = await fetch(
     `https://blogging-app-rh8v.vercel.app/api/posts?latest=true`,
     {
-      next: { revalidate: 60000 },
+      next: { revalidate: 6000 },
     }
   );
   return res.json();
