@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-function notFound() {
+function NotFound() {
   return (
     <div className="h-[600px] 2xl:h-[100vh] w-[95%] mx-auto flex flex-col items-center justify-center">
       <div className="flex items-center justify-center h-[70%] w-[100%]">
@@ -29,4 +29,4 @@ function notFound() {
   );
 }
 
-export default notFound;
+export default NotFound;

@@ -11,50 +11,23 @@ type singlePost = {
   desc: string;
 };
 
-// const data = [
-//   {
-//     img: "/pexels-format-1029757.jpg",
-//     date: "jan, 2024",
-//     title: "Lorem ipsum dolor sit amet",
-//     id: "1",
-//     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-//   },
-//   {
-//     img: "/pexels-miggy-rivera-5665104.jpg",
-//     date: "feb, 2024",
-//     title: "Sed ut perspiciatis unde",
-//     id: "2",
-//     desc: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-//   },
-//   {
-//     img: "/pexels-stefan-stefancik-91227.jpg",
-//     date: "mar, 2024",
-//     title: "At vero eos et accusamus",
-//     id: "3",
-//     desc: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
-//   },
-//   {
-//     img: "/pexels-tranmautritam-326502.jpg",
-//     date: "dec, 2023",
-//     title: "Et harum quidem rerum",
-//     id: "4",
-//     desc: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.",
-//   },
-// ];
-
 const getRecentPosts = async () => {
-  const res = await fetch(
-    `https://blogging-app-rh8v.vercel.app/api/posts?latest=true`,
-    {
-      next: { revalidate: 6000 },
-    }
-  );
-  return res.json();
+  try {
+    const res = await fetch(
+      `https://blogging-app-rh8v.vercel.app/api/posts?latest=true`,
+      {
+        next: { revalidate: 6000 },
+      }
+    );
+    return res.json();
+  } catch (error) {
+    return error;
+  }
 };
 const Hero = async () => {
-  const { Posts, message } = await getRecentPosts();
+  const { Posts, error } = await getRecentPosts();
 
-  if (message) {
+  if (error) {
     return (
       <ErrPage message="something went wrong, while fetching the latest posts" />
     );

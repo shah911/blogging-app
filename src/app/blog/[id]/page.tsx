@@ -1,3 +1,4 @@
+import NotFound from "@/app/not-found";
 import convertDateFormat from "@/components/Dateformatter";
 import DeletePost from "@/components/DeletePost";
 import ErrPage from "@/components/ErrPage";
@@ -11,26 +12,39 @@ type params = {
     id: string;
   };
 };
-let err: boolean;
+
 const getPost = async (id: string) => {
-  const res = await fetch(
-    `https://blogging-app-rh8v.vercel.app/api/posts/${id}`,
-    {
-      next: { revalidate: 600000 },
+  try {
+    const res = await fetch(
+      `https://blogging-app-rh8v.vercel.app/api/posts/${id}`,
+      {
+        next: { revalidate: 600000 },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(
+        `Error: Something went wrong! status code: ${res.status}`
+      );
     }
-  );
-  if (!res.ok) {
-    return (err = true);
+
+    return { data: await res.json(), error: null };
+  } catch (error) {
+    return { data: null, error };
   }
-  return res.json();
 };
 
 const SingleBlogPost = async ({ params }: params) => {
   const { id } = params;
-  const data = await getPost(id);
+  const { data, error } = await getPost(id);
+
   const session = await auth();
 
-  if (err) {
+  if (!data) {
+    return <NotFound />;
+  }
+
+  if (error) {
     return <ErrPage message="something went wrong, while fetching this post" />;
   }
 

@@ -46,6 +46,7 @@ const Edit = ({ params }: params) => {
   const [title, setTitle] = useState("");
   const [err, setErr] = useState(false);
 
+  // ToDo: error handling
   const getPost = async () => {
     const res = await fetch(`/api/posts/${postId}`);
     return res.json();
@@ -126,6 +127,7 @@ const Edit = ({ params }: params) => {
     setValue("content", content);
   };
 
+  //use useMutation to publish the post
   const PublishPost = async (
     title: string,
     desc: string,

@@ -13,8 +13,10 @@ const DeletePost = ({ postId }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  //use useMutation to delete the post
   const handleClick = async () => {
     setIsLoading(true);
+    //error handling
     const res = await fetch(`/api/posts/${postId}`, {
       method: "DELETE",
     });

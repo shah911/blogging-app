@@ -17,10 +17,9 @@ export const GET = async (req: NextRequest, { params }: params) => {
     });
     return new NextResponse(JSON.stringify(post), { status: 200 });
   } catch (err) {
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong" }),
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: "Something went wrong" }), {
+      status: 500,
+    });
   }
 };
 
@@ -47,10 +46,9 @@ export const DELETE = async (req: NextRequest, { params }: params) => {
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong" }),
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: "Something went wrong" }), {
+      status: 500,
+    });
   }
 };
 
@@ -80,9 +78,8 @@ export const PUT = async (req: NextRequest, { params }: params) => {
       { status: 200 }
     );
   } catch (err) {
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong" }),
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: "Something went wrong" }), {
+      status: 500,
+    });
   }
 };
