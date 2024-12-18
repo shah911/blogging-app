@@ -54,7 +54,7 @@ const SingleBlogPost = async ({ params }: params) => {
         <div className="relative h-[95%] w-[100%]">
           <Image
             src={data?.img}
-            alt=""
+            alt={data?.title}
             fill
             className="object-cover rounded-md 2xl:rounded-[0.375vw]"
           />

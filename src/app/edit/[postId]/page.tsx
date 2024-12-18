@@ -14,7 +14,7 @@ import { app } from "@/utils/firebase";
 import dynamic from "next/dynamic";
 import Loader from "@/components/Loader";
 import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import ErrPage from "@/components/ErrPage";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -46,9 +46,11 @@ const Edit = ({ params }: params) => {
   const [title, setTitle] = useState("");
   const [err, setErr] = useState(false);
 
-  // ToDo: error handling
   const getPost = async () => {
     const res = await fetch(`/api/posts/${postId}`);
+    if (!res.ok) {
+      throw new Error("something went wrong while fetching the post.");
+    }
     return res.json();
   };
 
@@ -127,28 +129,31 @@ const Edit = ({ params }: params) => {
     setValue("content", content);
   };
 
-  //use useMutation to publish the post
-  const PublishPost = async (
-    title: string,
-    desc: string,
-    img: string | null
-  ) => {
-    const res = await fetch(`/api/posts/${postId}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        title: title,
-        desc: desc,
-        img: img,
-      }),
-    });
-    if (res.ok) {
-      router.push("/blog");
-    } else {
-      window.scrollTo(0, 0);
-      setLoading(false);
-      return setErr(true);
+  const createPost = useMutation(
+    async (data: { title: string; desc: string; img: string | null }) => {
+      const res = await fetch(`/api/posts/${postId}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: data.title,
+          desc: data.desc,
+          img: data.img,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to update the post!");
+      }
+    },
+    {
+      onError: () => {
+        window.scrollTo(0, 0);
+        setLoading(false);
+        setErr(true);
+      },
+      onSuccess: () => {
+        router.push("/blog");
+      },
     }
-  };
+  );
 
   const onSubmit = async (formData: FormData) => {
     window.scrollTo(0, 0);
@@ -183,7 +188,11 @@ const Edit = ({ params }: params) => {
           },
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              PublishPost(title, content, downloadURL);
+              createPost.mutate({
+                title: title,
+                desc: content,
+                img: downloadURL,
+              });
               setLoading(false);
             });
           }
@@ -193,7 +202,7 @@ const Edit = ({ params }: params) => {
       upload();
     } else {
       setLoading(true);
-      PublishPost(title, content, image);
+      createPost.mutate({ title: title, desc: content, img: image });
     }
   };
 
