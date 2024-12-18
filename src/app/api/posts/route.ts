@@ -1,6 +1,7 @@
 import { auth } from "@/utils/auth";
 import prisma from "@/utils/connect";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -45,6 +46,7 @@ export const POST = async (req: NextRequest) => {
     const post = await prisma.post.create({
       data: { ...body, userId: session.user?.id },
     });
+    revalidatePath("/");
     return new NextResponse(JSON.stringify(post), { status: 200 });
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Something went wrong" }), {
